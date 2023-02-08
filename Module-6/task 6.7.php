@@ -1,23 +1,19 @@
 <?php
-$textStorage = array(
-    array('title' => array()),
-    array('text' => array())
-);
+$textStorage = array();
 
 function add (string $title, string $text){
     global $textStorage;
-    array_push($textStorage[0]['title'], $title);
-    array_push($textStorage[1]['text'], $text);
+    array_push($textStorage, ['title' => $title, 'text' => $text]);
 };
 
 add('заголовок 1', 'какой то текст');
 add('заголовок 2', 'ещё какой то текст');
-function remove ($titleIndex, $textIndex){
+function remove ($index){
     global $textStorage;
-    if ($textStorage[0]['title'][$titleIndex] && $textStorage[1]['text'][$textIndex]){
+    if ($textStorage[$index]['title'] && $textStorage[$index]['text']){
         var_dump(true);
-        unset($textStorage[0]['title'][$titleIndex]);
-        unset($textStorage[1]['text'][$textIndex]);
+        unset($textStorage[$index]['title']);
+        unset($textStorage[$index]['text']);
     }else{
         var_dump(false);
     }
@@ -25,10 +21,10 @@ function remove ($titleIndex, $textIndex){
 
 function edit (int $index, string $title, string $text, &$textStorage){
 
-    if ($textStorage[0]['title'][$index] && $textStorage[1]['text'][$index]){
+    if ($textStorage[$index]['title'] && $textStorage[$index]['text']){
 
-        $textStorage[0]['title'][$index] = $title;
-        $textStorage[1]['text'][$index] = $text;
+        $textStorage[$index]['title'] = $title;
+        $textStorage[$index]['text'] = $text;
         var_dump(true);
 
     }else{
