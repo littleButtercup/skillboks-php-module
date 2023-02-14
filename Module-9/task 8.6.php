@@ -9,7 +9,7 @@ class TelegraphText {
     }
 
     public function storeText(){
-        $arrayText = ['title'=>$this->title, 'text'=>$this->text, 'author'=>$this->author,'published'=>$this->published];
+       $arrayText = ['title'=>$this->title, 'text'=>$this->text, 'author'=>$this->author,'published'=>$this->published];
          file_put_contents($this->slug, serialize($arrayText));
     }
 
@@ -35,7 +35,7 @@ class TelegraphText {
 }
 
 
-//$block = new TelegraphText('text1');
+$block = new TelegraphText('text1');
 //var_dump(($block->editAuthor('Автор')));
 //var_dump($block->editText('какой-то текст','новый заголовок'));
 //var_dump ($block->storeText());

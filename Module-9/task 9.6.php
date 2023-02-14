@@ -54,15 +54,15 @@ class FileStorage extends Storage
             $i++;
         }
         $obj->slug = $fileName;
-        $obj->storeText();
-        return $fileName;
+        file_put_contents($obj->slug, serialize($obj));
+        return $obj->slug;
     }
 
-    public function read($slug): TelegraphText
+    public function read($slug)
     {
-        $obj = new TelegraphText($slug);
-        $obj->loadText();
-        return $obj;
+        if (file_exists($slug)) {
+            return unserialize(file_get_contents($slug));
+        }
     }
 
     public function update($slug, $obj)
@@ -78,7 +78,7 @@ class FileStorage extends Storage
         }
     }
 
-    public function list($dir)
+    public function list($dir): array
     {
         $arrayFile = [];
         $arraySome = scandir($dir);
@@ -92,4 +92,5 @@ class FileStorage extends Storage
 }
 
 $someStorage = new FileStorage();
-var_dump($someStorage->list('C:\soft\xampp\htdocs\welcome\texts'));
+var_dump($someStorage->create($block));
+var_dump($someStorage->list('./'));
