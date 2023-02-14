@@ -31,7 +31,7 @@ abstract class Storage implements LoggerInterface, EventListenerInterface
     private $logArray=[];
     public function logMessage($errorText)
     {
-        $this->logArray = $errorText;
+        $this->logArray[] = $errorText;
     $this->lastMessages(count($this->logArray));
     }
 
@@ -72,7 +72,7 @@ abstract class User implements EventListenerInterface
     }
     public function detouchEvent($classMetName)
     {
-        
+
     }
 
 }
