@@ -5,7 +5,7 @@ class TelegraphText {
 
     public function __construct($slug){
         $this->slug = $slug;
-        $this->published = date(DATE_RFC822);
+        $this->published = date('Y_m_d');
     }
 
     public function storeText(){
@@ -35,8 +35,8 @@ class TelegraphText {
 }
 
 
-$block = new TelegraphText('text1');
-var_dump(($block->editAuthor('Автор')));
-var_dump($block->editText('какой-то текст','новый заголовок'));
-var_dump ($block->storeText());
-var_dump ($block->loadText());
+//$block = new TelegraphText('text1');
+//var_dump(($block->editAuthor('Автор')));
+//var_dump($block->editText('какой-то текст','новый заголовок'));
+//var_dump ($block->storeText());
+//var_dump ($block->loadText());

@@ -24,9 +24,9 @@ abstract class View
 {
     private $storage;
 
-    public function __construct()
+    public function __construct($FileStorage)
     {
-
+        $this->storage = $FileStorage;
     }
 
     abstract function displayTextById($id);
@@ -58,9 +58,9 @@ class FileStorage extends Storage
         return $fileName;
     }
 
-public function read($slug): TelegraphText
+    public function read($slug): TelegraphText
     {
-        $obj= new TelegraphText($slug);
+        $obj = new TelegraphText($slug);
         $obj->loadText();
         return $obj;
     }
@@ -70,18 +70,20 @@ public function read($slug): TelegraphText
         $obj->slug = $slug;
         $obj->storeText();
     }
-public function delete($slug)
+
+    public function delete($slug)
     {
-        if(file_exists($slug)){
+        if (file_exists($slug)) {
             unlink($slug);
         }
     }
-public function list($dir)
+
+    public function list($dir)
     {
         $arrayFile = [];
         $arraySome = scandir($dir);
-        for ($i = 2; $i < count($arraySome); $i++){
-            if(!is_dir($arraySome[$i])){
+        for ($i = 2; $i < count($arraySome); $i++) {
+            if (!is_dir($arraySome[$i])) {
                 $arrayFile[] = $this->read($arraySome[$i]);
             }
         }
