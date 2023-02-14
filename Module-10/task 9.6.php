@@ -38,7 +38,7 @@ abstract class Storage implements LoggerInterface, EventListenerInterface
     public function lastMessages($countMessage)
     {
         for ($i=0; $i < $countMessage; $i++){
-            return $this->logArray[$countMessage];
+            return $this->logArray[$i];
         }
 
     }
