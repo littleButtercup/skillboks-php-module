@@ -9,12 +9,12 @@ class TelegraphText
     public function __construct($slug)
     {
         $this->slug = $slug;
-        $this->published = date('Y_m_d');
+        $this->published = date('jS F Y ');
     }
 
-    private function storeText()
+    private function storeText($text)
     {
-        $arrayText = ['title' => $this->title, 'text' => $this->text, 'author' => $this->author, 'published' => $this->published];
+        $arrayText = ['title' => $this->title, 'text' => $this->text=$text, 'author' => $this->author, 'published' => $this->published];
         file_put_contents($this->slug, serialize($arrayText));
     }
 
@@ -67,7 +67,7 @@ class TelegraphText
 
     public function setPublished($value)
     {
-        if ($value >= date('Y_m_d')) {
+        if ($value >= strtotime(date('jS F Y '))) {
             $this->published = $value;
         }
     }
@@ -80,7 +80,7 @@ class TelegraphText
     public function __set($name, $value)
     {
         if ($name == 'text') {
-            $this->storeText();
+            $this->storeText($value);
         }
         if ($name == 'author'){
             $this->setAuthor($value);
@@ -114,5 +114,6 @@ class TelegraphText
 $block = new TelegraphText('text1');
 //var_dump(($block->editAuthor('Автор')));
 //var_dump($block->editText('какой-то текст','новый заголовок'));
+echo $block->text;
 //var_dump ($block->storeText());
 //var_dump ($block->loadText());
