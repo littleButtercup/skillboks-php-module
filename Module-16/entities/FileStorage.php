@@ -1,5 +1,6 @@
 <?php
 require_once 'Storage.php';
+
 class FileStorage extends Storage
 {
     public function create($obj)

@@ -12,7 +12,7 @@ class TelegraphText
 
     private function storeText($text)
     {
-        $arrayText = ['title' => $this->title, 'text' => $this->text=$text, 'author' => $this->author, 'published' => $this->published];
+        $arrayText = ['title' => $this->title, 'text' => $this->text = $text, 'author' => $this->author, 'published' => $this->published];
         file_put_contents($this->slug, serialize($arrayText));
     }
 
@@ -79,27 +79,21 @@ class TelegraphText
     public function __set($name, $value)
     {
         if ($name == 'text') {
-            try {
-                if(strlen($value) < 1){
-                    throw new Exception('нет текста');
-                }elseif (strlen($value)>500){
-                    throw new Exception('привешение символов');
-                }
-
-            }catch (Exception $e){
-                echo "<div style='background: pink; width: 200px; height: 50px; font-weight: bolder'>".$e->getMessage()."</div>";
+            if (mb_strlen($value) < 1) {
+                throw new Exception('нет текста');
+            } elseif (mb_strlen($value) > 500) {
+                throw new Exception('привешение символов');
             }
-
 
             $this->storeText($value);
         }
-        if ($name == 'author'){
+        if ($name == 'author') {
             $this->setAuthor($value);
         }
-        if ($name == 'slug'){
+        if ($name == 'slug') {
             $this->setSlug($value);
         }
-        if ($name == 'published'){
+        if ($name == 'published') {
             $this->setPublished($value);
         }
     }
@@ -109,14 +103,21 @@ class TelegraphText
         if ($name == 'text') {
             return $this->loadText();
         }
-        if ($name == 'author'){
+        if ($name == 'author') {
             return $this->getAuthor();
         }
-        if ($name == 'slug'){
+        if ($name == 'slug') {
             return $this->getSlug();
         }
-        if ($name == 'published'){
+        if ($name == 'published') {
             return $this->getPublished();
         }
     }
 }
+
+function exception_handler($exception)
+{
+    echo "<div style='background: pink; font-weight: bolder;width: 100px;height: 50px'>" . $exception->getMessage() . "</div>";
+}
+
+set_exception_handler('exception_handler');

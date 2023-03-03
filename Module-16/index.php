@@ -1,7 +1,4 @@
 <?php
 require_once "./autoload.php";
+//phpinfo();
 
-
-var_dump($someObject = new FileStorage('text1'));
-
-phpinfo();

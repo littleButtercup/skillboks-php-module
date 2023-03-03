@@ -1,5 +1,6 @@
 <?php
 require_once "./entities/FileStorage.php";
+
 abstract class View
 {
     private $storage;
