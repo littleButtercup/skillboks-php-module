@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace App;
+
+use App\Controller\ArticleContentProviderInterface;
 
 class ArticleContentProvider implements  ArticleContentProviderInterface
 {
-    public function get(int $paragraphs, string $word = 'MEGAWORD', int $wordsCount = 10): string {
+
+    public function get(int $paragraphs, string $word, int $wordsCount): string {
 
         $articleContent = [
             "Lorem ipsum кофе dolor sit amet, consectetur adipiscing elit, sed

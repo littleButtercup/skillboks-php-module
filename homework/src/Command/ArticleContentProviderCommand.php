@@ -3,7 +3,9 @@
 namespace App\Command;
 
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Controller\ArticleContentProviderInterface;
+use App\Controller\ArticleController;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,34 +21,36 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ArticleContentProviderCommand extends Command
 {
-
-
     protected function configure(): void
     {
         $this
-            ->addArgument(
-                'arg1',
-                InputArgument::OPTIONAL,
-                'Argument description',
-                )
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            ->setDescription('выводит переданные параметры')
+            ->addArgument('slug', InputArgument::OPTIONAL, 'Argument description')
+            ->addOption('option1', null, InputOption::VALUE_REQUIRED, 'Option description')
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
+
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+//        $slug = $input->getArgument('slug');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
-        }
+        $data = [
+            'paragraphs'=>4,
+            'word' => null,
+            'wordsCount' => 0
+        ];
 
-        if ($input->getOption('option1')) {
-            $io->write(json_encode());
-        }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+            $io->write(json_encode($data));
+
+
+//        if ($input->getOption('format')) {
+//            $io->write(json_encode($data));
+//        }
+
+//        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
     }

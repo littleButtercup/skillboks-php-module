@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
-use App\Command\ArticleContentProviderCommand;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-use Symfony\Component\Routing\Annotation\Route;
+use App\ArticleContentProvider;
 use Michelf\Markdown;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
 {
+
+    protected $comand=[];
+
     /**
      * @Route("/articles/home", name="app_homepage" )
      */
@@ -23,23 +25,30 @@ class ArticleController extends AbstractController
     /**
      * @Route("/articles/view/{id}", name="app_detailse")
      */
-    public function viewpage(string $id, ArticleContentProvider $articleContentProvider, ArticleProvider $articleProvider, ArticleContentProviderCommand $command)
+    public function viewpage(string $id, ArticleContentProvider $articleContentProvider, ArticleProvider $articleProvider)
     {
-        $arrayWords = ['MEGAWORD', 'HYPERWORD', 'UBERWORD', ' COOLWORD', 'DUPERWORD'];
-        $randon = rand(1,10);
-        $word = $this->getParameter('app.words_bold') ? '**'.$arrayWords[rand(0,4)].'**':'*'.$arrayWords[rand(0,4)].'*';
-        $randomWord = $randon <= 7 ? $word : " ";
-        $randomQuantity = $randon <= 7 ? $randon : 0;
+        $this->createWords();
         $cache = new FilesystemAdapter();
         $item = $cache->getItem('markdown_' . md5($id));
 
 //        if (!$item->isHit()){
         if (true){
-            $item->set(Markdown::defaultTransform($articleContentProvider->get(rand(1,4), $randomWord, $randomQuantity)));
+            $item->set(Markdown::defaultTransform($articleContentProvider->get($this->comand[0], $this->comand[1], $this->comand[2])));
             $cache->save($item);
         }
         $articleContent = $item->get();
         $input = $articleProvider->article();
         return $this->render('articles/view.html.twig', ['article' => $input, 'articleContent' => $articleContent]);
     }
+    public function createWords(){
+
+        $arrayWords = ['MEGAWORD', 'HYPERWORD', 'UBERWORD', 'COOLWORD', 'DUPERWORD'];
+        $randon = rand(1,10);
+        $word_bold = $this->getParameter('$words_bold');
+        $word = $word_bold.$arrayWords[rand(0,4)].$word_bold;
+        $randomWord = $randon <= 7 ? $word : "";
+        $randomQuantity = $randon <= 7 ? $randon : 0;
+        return $this->comand = [rand(1,4), $randomWord,$randomQuantity];
+    }
+
 }
