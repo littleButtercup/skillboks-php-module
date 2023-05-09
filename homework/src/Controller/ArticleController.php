@@ -28,12 +28,13 @@ class ArticleController extends AbstractController
     public function viewpage(string $id, ArticleContentProvider $articleContentProvider, ArticleProvider $articleProvider)
     {
         $this->createWords();
+        $word_bold = $this->getParameter('$words_bold');
         $cache = new FilesystemAdapter();
         $item = $cache->getItem('markdown_' . md5($id));
 
 //        if (!$item->isHit()){
         if (true){
-            $item->set(Markdown::defaultTransform($articleContentProvider->get($this->comand[0], $this->comand[1], $this->comand[2])));
+            $item->set(Markdown::defaultTransform($articleContentProvider->get($this->comand[0], $word_bold.$this->comand[1].$word_bold, $this->comand[2])));
             $cache->save($item);
         }
         $articleContent = $item->get();
@@ -41,14 +42,13 @@ class ArticleController extends AbstractController
         return $this->render('articles/view.html.twig', ['article' => $input, 'articleContent' => $articleContent]);
     }
     public function createWords(){
-
         $arrayWords = ['MEGAWORD', 'HYPERWORD', 'UBERWORD', 'COOLWORD', 'DUPERWORD'];
         $randon = rand(1,10);
-        $word_bold = $this->getParameter('$words_bold');
-        $word = $word_bold.$arrayWords[rand(0,4)].$word_bold;
+        $word = $arrayWords[rand(0,4)];
         $randomWord = $randon <= 7 ? $word : "";
         $randomQuantity = $randon <= 7 ? $randon : 0;
         return $this->comand = [rand(1,4), $randomWord,$randomQuantity];
+
     }
 
 }
