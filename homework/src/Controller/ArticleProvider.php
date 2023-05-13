@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controller;
+use App\ArticleContentProvider;
+
 class ArticleProvider
 {
     protected  $articles;
@@ -14,7 +16,6 @@ class ArticleProvider
 
     public function articles()
     {
-
         return $this->articles;
     }
 

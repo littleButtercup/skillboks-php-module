@@ -3,6 +3,7 @@
 namespace App\Command;
 
 
+use App\ArticleContentProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Controller\ArticleContentProviderInterface;
 use App\Controller\ArticleController;
@@ -21,12 +22,21 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ArticleContentProviderCommand extends Command
 {
+    private $art;
+    public function __construct(ArticleController $art)
+    {
+        $this->art = $art;
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
             ->setDescription('выводит переданные параметры')
-            ->addArgument('slug', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_REQUIRED, 'Option description')
+//            ->addArgument('paragraphs', InputArgument::OPTIONAL, 'Paragraphs number',4)
+//            ->addArgument('word', InputArgument::OPTIONAL, 'Additional word', 'SSSS')
+//            ->addArgument('wordsCount', InputArgument::OPTIONAL, 'Additional word repeat number', 0)
+//            ->addOption('option1', null, InputOption::VALUE_REQUIRED, 'Option description')
         ;
     }
 
@@ -34,23 +44,10 @@ class ArticleContentProviderCommand extends Command
     {
 
         $io = new SymfonyStyle($input, $output);
-//        $slug = $input->getArgument('slug');
 
-        $data = [
-            'paragraphs'=>4,
-            'word' => null,
-            'wordsCount' => 0
-        ];
+        $articleContent = $this->art->createWords();
 
-
-            $io->write(json_encode($data));
-
-
-//        if ($input->getOption('format')) {
-//            $io->write(json_encode($data));
-//        }
-
-//        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+            $io->write(json_encode($articleContent));
 
         return Command::SUCCESS;
     }

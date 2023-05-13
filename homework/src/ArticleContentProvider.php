@@ -6,7 +6,6 @@ use App\Controller\ArticleContentProviderInterface;
 
 class ArticleContentProvider implements  ArticleContentProviderInterface
 {
-
     public function get(int $paragraphs, string $word, int $wordsCount): string {
 
         $articleContent = [
