@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+<form action="{{ path('app_formpage') }}" method="get" style="display: flex" name="wer">
+    <div>
+        <input name="paragraphs" value="{{ app.request.query.get('paragraphs') }}"/>
+    </div>
+    <div>
+        <input name="word" value="{{ app.request.query.get('word') }}"/>
+    </div>
+    <div>
+        <input name="wordsCount" value="{{ app.request.query.get('wordsCount') }}"/>
+    </div>
+
+    <div>
+        <button type="submit">submint</button>
+
+    </div>
+</form>
+<div>
+    {{ text|cached_markdown }}
+</div>
+</body>
+</html>
