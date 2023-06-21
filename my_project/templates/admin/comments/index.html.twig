@@ -11,22 +11,9 @@
 
                 <div class="row border rounded-lg overflow-hidden flex-md-row mb-4 shadow-sm position-relative bg-white">
                     <div class="col-sm-12">
-                        <h1>Управление комментариями</h1>
+                        <h1>Управление комментариями {{ pagination.totalItemCount }}</h1>
 
-                        <form>
-                            <div class="input-group mb-3">
-                                <input type="text"
-                                       name="q"
-                                       class="form-control"
-                                       placeholder="Найти..."
-                                       value="{{ app.request.get('q') }}"
-                                >
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
-                                </div>
-                            </div>
-                        </form>
-
+                        {% include 'admin/filter.html.twig' with { app: app, deletedLabel: 'Удаленные комментарии' } %}
 
                         <table class="table table-striped">
                             <thead>
@@ -39,16 +26,16 @@
                             </thead>
                             <tbody>
 
-                            {% for comment in comments %}
+                            {% for comment in pagination %}
                                 <tr>
                                     <td>
-                                        <a href="#">
-                                            {{ comment.articleTitle }}
+                                        <a href="{{ path('app_detailse', { id: comment.article.slug }) }}">
+                                            {{ comment.article.title }}
                                         </a>
                                     </td>
                                     <td>{{ comment.authorName }}</td>
-                                    <td style="width: 20%;">{{ comment.comment|u.truncate(40, '...') }}</td>
-                                    <td>{{ comment.createdAt|ago }}</td>
+                                    <td style="width: 20%;">{{ comment.content|u.truncate(40, '...') }}</td>
+                                    <td>{{ comment.createdAt|ago }} {% if comment.deleted %} Удален {% endif %}</td>
                                 </tr>
 
                             {% else %}
@@ -58,6 +45,7 @@
                             {% endfor %}
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 
@@ -65,4 +53,5 @@
 
         </div>
     </div>
+    {{ knp_pagination_render(pagination) }}
 {% endblock %}

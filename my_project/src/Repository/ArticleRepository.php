@@ -21,6 +21,11 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    /**
+     * @param Article $entity
+     * @param bool $flush
+     * @return void
+     */
     public function add(Article $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -30,6 +35,11 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @param Article $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(Article $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -46,20 +56,9 @@ class ArticleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->orderBy('a.publishedAt', 'DESC')
+            ->leftJoin('a.tags', 't')
+            ->addSelect('t')
             ->getQuery()
             ->getResult();
-
-
-
     }
-
-//    public function findOneBySomeField($value): ?Article
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

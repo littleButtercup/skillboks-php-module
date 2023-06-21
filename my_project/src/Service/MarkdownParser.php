@@ -7,8 +7,6 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class MarkdownParser
 {
-
-
     /**
      * @var Parsedown
      */
@@ -24,6 +22,10 @@ class MarkdownParser
         $this->cache = $cache;
     }
 
+    /**
+     * @param string $source
+     * @return string
+     */
     public function parse(string $source): string
     {
         return $this->cache->get('markdown_' . md5($source), function () use ($source) {
