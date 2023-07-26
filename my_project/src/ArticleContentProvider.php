@@ -3,14 +3,13 @@
 namespace App;
 
 use App\Controller\ArticleContentProviderInterface;
-use App\Controller\ArticleController;
-use App\Entity\Article;
-use Doctrine\ORM\EntityManagerInterface;
+
 
 class ArticleContentProvider implements ArticleContentProviderInterface
 {
     public $repositoryProvider;
 
+    
     public function get(int $paragraphs, string $word, int $wordsCount): string
     {
 

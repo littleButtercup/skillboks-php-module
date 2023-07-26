@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Управление тегами{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12">
+
+                <div class="row border rounded-lg overflow-hidden flex-md-row mb-4 shadow-sm position-relative bg-white">
+                    <div class="col-sm-12">
+                        <h1>Управление тегами {{ pagination.totalItemCount }}</h1>
+
+                        {% include 'admin/filter.html.twig' with { app: app, deletedLabel: "Удаленные теги" } %}
+
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Теги</th>
+                                <th>Символьный код</th>
+                                <th>Количество статей</th>
+                                <th>Дата</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for tag in pagination %}
+                                <tr>
+                                    <td style="width: 20%;">{{ tag.name|u.truncate(40, '...') }}</td>
+                                    <td>{{ tag.slug }} {% if tag.deleted %} DELETED {% endif %}</td>
+                                    <td>
+                                        {{ tag.articles|length }}
+                                    </td>
+
+                                    <td>{{ tag.createdAt|ago }} </td>
+                                </tr>
+
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">Нет тегов</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}

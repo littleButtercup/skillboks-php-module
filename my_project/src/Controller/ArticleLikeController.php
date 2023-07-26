@@ -2,30 +2,32 @@
 
 namespace App\Controller;
 
-use App\Entity\Article;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\ArticleService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+/**
+ * контроллер выводит количетсво голосов на страницу
+ */
 class ArticleLikeController extends AbstractController
 {
-    /**
-     *
-     * @Route("/articles/{id}/vote/{type<voteUp|voteDown>}", name="app_articles_vote")
-     */
-    public function vote(EntityManagerInterface $em, $type, $id)
+    protected $article;
+    public function __construct(ArticleService $articleService)
     {
-        $repository = $em->getRepository(Article::class);
-        $article = $repository->findOneBy(['slug' => $id]);
-        if ($type == 'voteUp') {
-            $article->setVoteCount($article->getVoteCount() + 1);
-        } elseif ($type == 'voteDown') {
-            $article->setVoteCount($article->getVoteCount() - 1);
-        }
-        $em->flush();
+        $this->article = $articleService;
+    }
 
-      return $this->render('articles/colorCount.html.twig', ['count' => $article->getVoteCount()]);
+    /**
+     * @Route("/articles/{id}/vote/{type<voteUp|voteDown>}", name="app_articles_vote")
+     * @param string $type
+     * @param string $id
+     * @return Response
+     */
+
+    public function vote(string $type, string $id): Response
+    {
+        $article =  $this->article->vote($type, $id);
+        return $this->render('articles/colorCount.html.twig', ['count' => $article->getVoteCount()]);
     }
 }
